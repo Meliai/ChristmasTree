@@ -36,14 +36,5 @@
         android:layout_gravity="center"
         android:src="@drawable/grass" />
 
-    <TextView
-        android:id="@+id/widget_plant_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        tools:text="123" />
 
 </LinearLayout>

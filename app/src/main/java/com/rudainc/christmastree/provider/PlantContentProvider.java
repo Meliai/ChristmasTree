@@ -25,6 +25,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -171,18 +172,21 @@ public class PlantContentProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         // Keep track of the number of deleted plants
         int plantsDeleted; // starts as 0
-        switch (match) {
-            // Handle the single item case, recognized by the ID included in the URI path
-            case PLANT_WITH_ID:
-                // Get the plant ID from the URI path
-                String id = uri.getPathSegments().get(1);
-                // Use selections/selectionArgs to filter for this ID
-                plantsDeleted = db.delete(PlantEntry.TABLE_NAME, "_id=?", new String[]{id});
-                break;
-            default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
-        }
+//        switch (match) {
+//            // Handle the single item case, recognized by the ID included in the URI path
+//            case PLANTS:
+//                // Get the plant ID from the URI path
+//                String id = uri.getPathSegments().get(1);
+//                // Use selections/selectionArgs to filter for this ID
+//                plantsDeleted = db.delete(PlantEntry.TABLE_NAME, "_id=?", new String[]{id});
+//                break;
+//            default:
+//                throw new UnsupportedOperationException("Unknown uri: " + uri);
+//        }
+        String id = selectionArgs[0];
+        plantsDeleted = db.delete(PlantEntry.TABLE_NAME, "_id=?", new String[]{id});
         // Notify the resolver of a change and return the number of items deleted
+        Log.i("DELETED", "plants " + plantsDeleted);
         if (plantsDeleted != 0) {
             // A plant (or more) was deleted, set notification
             getContext().getContentResolver().notifyChange(uri, null);

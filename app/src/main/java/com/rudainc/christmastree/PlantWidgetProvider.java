@@ -29,7 +29,6 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.rudainc.christmastree.provider.PlantContract;
-import com.rudainc.christmastree.ui.MainActivity;
 import com.rudainc.christmastree.ui.PlantDetailActivity;
 
 
@@ -86,19 +85,16 @@ public class PlantWidgetProvider extends AppWidgetProvider {
         // Set the click handler to open the DetailActivity for plant ID,
         // or the MainActivity if plant ID is invalid
         Intent intent;
-        if (plantId == PlantContract.INVALID_PLANT_ID) {
-            intent = new Intent(context, MainActivity.class);
-        } else { // Set on click to open the corresponding detail activity
-            Log.d(PlantWidgetProvider.class.getSimpleName(), "plantId=" + plantId);
+
             intent = new Intent(context, PlantDetailActivity.class);
             intent.putExtra(PlantDetailActivity.EXTRA_PLANT_ID, plantId);
-        }
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.plant_widget);
         // Update image and text
         views.setImageViewResource(R.id.widget_plant_image, imgRes);
-        views.setTextViewText(R.id.widget_plant_name, String.valueOf(plantId));
+
         // Show/Hide the water drop button
         if (showWater) views.setViewVisibility(R.id.widget_water_button, View.VISIBLE);
         else views.setViewVisibility(R.id.widget_water_button, View.INVISIBLE);

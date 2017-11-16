@@ -107,7 +107,6 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         // Update the plant image
         int imgRes = PlantUtils.getPlantImageRes(mContext, timeNow - createdAt, timeNow - wateredAt, plantType);
         views.setImageViewResource(R.id.widget_plant_image, imgRes);
-        views.setTextViewText(R.id.widget_plant_name, String.valueOf(plantId));
         // Always hide the water drop in GridView mode
         views.setViewVisibility(R.id.widget_water_button, View.GONE);
 
