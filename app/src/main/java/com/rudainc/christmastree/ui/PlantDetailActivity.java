@@ -42,7 +42,7 @@ public class PlantDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int SINGLE_LOADER_ID = 200;
-    public static final String EXTRA_PLANT_ID = "com.example.android.mygarden.extra.PLANT_ID";
+    public static final String EXTRA_PLANT_ID = "com.rudainc.christmastree.extra.PLANT_ID";
     long mPlantId;
 
     @Override

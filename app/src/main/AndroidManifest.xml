@@ -27,7 +27,7 @@
 
         <provider
             android:name=".provider.PlantContentProvider"
-            android:authorities="com.example.android.mygarden"
+            android:authorities="com.rudainc.christmastree"
             android:exported="true" />
 
         <activity
