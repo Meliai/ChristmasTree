@@ -30,7 +30,7 @@
         app:value="100" />
 
     <TextView
-        android:id="@+id/last_watered_number"
+        android:id="@+id/wateredAt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="40sp"
@@ -43,13 +43,13 @@
         tools:text="17" />
 
     <TextView
-        android:id="@+id/last_watered_unit"
+        android:id="@+id/wateredAtUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="@+id/water_level"
         app:layout_constraintRight_toRightOf="@+id/water_level"
-        app:layout_constraintTop_toTopOf="@+id/last_watered_number"
+        app:layout_constraintTop_toTopOf="@+id/wateredAt"
         tools:text="@string/minutes" />
 </android.support.constraint.ConstraintLayout>

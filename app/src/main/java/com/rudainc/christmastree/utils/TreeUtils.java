@@ -23,7 +23,7 @@ import android.content.res.TypedArray;
 import com.rudainc.christmastree.R;
 
 
-public class PlantUtils {
+public class TreeUtils {
 
     private static final long MINUTE_MILLISECONDS = 1000 * 60;
     private static final long HOUR_MILLISECONDS = MINUTE_MILLISECONDS * 60;
@@ -53,7 +53,7 @@ public class PlantUtils {
      * @param waterAge Time (in milliseconds) since it was last watered
      * @return Image Resource to the correct plant image
      */
-    public static int getPlantImageRes(Context context, long plantAge, long waterAge, int type) {
+    public static int getPlantImageRes(Context context, long plantAge, long waterAge) {
         //check if plant is dead first
         PlantStatus status = PlantStatus.ALIVE;
         if (waterAge > MAX_AGE_WITHOUT_WATER) status = PlantStatus.DEAD;
@@ -61,11 +61,11 @@ public class PlantUtils {
 
         //Update image if old enough
         if (plantAge > FULLY_GROWN_AGE) {
-            return getPlantImgRes(context, type, status, PlantSize.FULLY_GROWN);
+            return getPlantImgRes(context,status, PlantSize.FULLY_GROWN);
         } else if (plantAge > JUVENILE_AGE) {
-            return getPlantImgRes(context, type, status, PlantSize.JUVENILE);
+            return getPlantImgRes(context,  status, PlantSize.JUVENILE);
         } else if (plantAge > TINY_AGE) {
-            return getPlantImgRes(context, type, status, PlantSize.TINY);
+            return getPlantImgRes(context, status, PlantSize.TINY);
         } else {
             return R.drawable.empty_pot;
         }
@@ -76,15 +76,14 @@ public class PlantUtils {
      * size (age category)
      *
      * @param context The context
-     * @param type    The plant type (starts from 0 and corresponds to the index to the item in arrays.xml)
      * @param status  The PlantStatus
      * @param size    The PlantSize
      * @return Image Resource to the correct plant image
      */
-    public static int getPlantImgRes(Context context, int type, PlantStatus status, PlantSize size) {
+    public static int getPlantImgRes(Context context, PlantStatus status, PlantSize size) {
         Resources res = context.getResources();
         TypedArray plantTypes = res.obtainTypedArray(R.array.plant_types);
-        String resName = plantTypes.getString(type);
+        String resName = plantTypes.getString(0);
         if (status == PlantStatus.DYING) resName += "_danger";
         else if (status == PlantStatus.DEAD) resName += "_dead";
         if (size == PlantSize.TINY) resName += "_1";
@@ -93,24 +92,6 @@ public class PlantUtils {
         return context.getResources().getIdentifier(resName, "drawable", context.getPackageName());
     }
 
-    /**
-     * Returns the plant type display name based on the type index from the string resources
-     *
-     * @param context The context
-     * @param type    The plant type (starts from 0 and corresponds to the index to the item in arrays.xml)
-     * @return The plant type display name
-     */
-    public static String getPlantTypeName(Context context, int type) {
-        Resources res = context.getResources();
-        TypedArray plantTypes = res.obtainTypedArray(R.array.plant_types);
-        String resName = plantTypes.getString(type);
-        int resId = context.getResources().getIdentifier(resName, "string", context.getPackageName());
-        try {
-            return context.getResources().getString(resId);
-        } catch (Resources.NotFoundException ex) {
-            return context.getResources().getString(R.string.unknown_type);
-        }
-    }
 
     /**
      * Converts the age in milli seconds to a displayable format (days, hours or minutes)

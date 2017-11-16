@@ -24,15 +24,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.rudainc.christmastree.provider.PlantContract;
-import com.rudainc.christmastree.ui.PlantDetailActivity;
+import com.rudainc.christmastree.ui.ChristmasTreeActivity;
 
 
-public class PlantWidgetProvider extends AppWidgetProvider {
+public class TreeWidgetProvider extends AppWidgetProvider {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
@@ -52,7 +50,7 @@ public class PlantWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         //Start the intent service update widget action, the service takes care of updating the widgets UI
-        PlantWateringService.startActionUpdatePlantWidgets(context);
+        TreeWateringService.startActionUpdatePlantWidgets(context);
     }
 
     /**
@@ -86,8 +84,8 @@ public class PlantWidgetProvider extends AppWidgetProvider {
         // or the MainActivity if plant ID is invalid
         Intent intent;
 
-            intent = new Intent(context, PlantDetailActivity.class);
-            intent.putExtra(PlantDetailActivity.EXTRA_PLANT_ID, plantId);
+            intent = new Intent(context, ChristmasTreeActivity.class);
+            intent.putExtra(ChristmasTreeActivity.EXTRA_PLANT_ID, plantId);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // Construct the RemoteViews object
@@ -101,10 +99,10 @@ public class PlantWidgetProvider extends AppWidgetProvider {
         // Widgets allow click handlers to only launch pending intents
         views.setOnClickPendingIntent(R.id.widget_plant_image, pendingIntent);
         // Add the wateringservice click handler
-        Intent wateringIntent = new Intent(context, PlantWateringService.class);
-        wateringIntent.setAction(PlantWateringService.ACTION_WATER_PLANT);
+        Intent wateringIntent = new Intent(context, TreeWateringService.class);
+        wateringIntent.setAction(TreeWateringService.ACTION_WATER_PLANT);
         // Add the plant ID as extra to water only that plant when clicked
-        wateringIntent.putExtra(PlantWateringService.EXTRA_PLANT_ID, plantId);
+        wateringIntent.putExtra(TreeWateringService.EXTRA_PLANT_ID, plantId);
         PendingIntent wateringPendingIntent = PendingIntent.getService(context, 0, wateringIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_water_button, wateringPendingIntent);
         return views;
@@ -121,8 +119,8 @@ public class PlantWidgetProvider extends AppWidgetProvider {
         // Set the GridWidgetService intent to act as the adapter for the GridView
         Intent intent = new Intent(context, GridWidgetService.class);
         views.setRemoteAdapter(R.id.widget_grid_view, intent);
-        // Set the PlantDetailActivity intent to launch when clicked
-        Intent appIntent = new Intent(context, PlantDetailActivity.class);
+        // Set the ChristmasTreeActivity intent to launch when clicked
+        Intent appIntent = new Intent(context, ChristmasTreeActivity.class);
         PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setPendingIntentTemplate(R.id.widget_grid_view, appPendingIntent);
         // Handle empty gardens
@@ -134,7 +132,7 @@ public class PlantWidgetProvider extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
                                           int appWidgetId, Bundle newOptions) {
-        PlantWateringService.startActionUpdatePlantWidgets(context);
+        TreeWateringService.startActionUpdatePlantWidgets(context);
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
     }
 

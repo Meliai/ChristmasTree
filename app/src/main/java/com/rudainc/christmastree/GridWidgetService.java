@@ -25,12 +25,12 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.rudainc.christmastree.provider.PlantContract;
-import com.rudainc.christmastree.ui.PlantDetailActivity;
-import com.rudainc.christmastree.utils.PlantUtils;
+import com.rudainc.christmastree.provider.ChristmasTreeContract;
+import com.rudainc.christmastree.ui.ChristmasTreeActivity;
+import com.rudainc.christmastree.utils.TreeUtils;
 
-import static com.rudainc.christmastree.provider.PlantContract.BASE_CONTENT_URI;
-import static com.rudainc.christmastree.provider.PlantContract.PATH_PLANTS;
+import static com.rudainc.christmastree.provider.ChristmasTreeContract.BASE_CONTENT_URI;
+import static com.rudainc.christmastree.provider.ChristmasTreeContract.PATH;
 
 
 public class GridWidgetService extends RemoteViewsService {
@@ -59,14 +59,14 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public void onDataSetChanged() {
         // Get all plant info ordered by creation time
-        Uri PLANT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_PLANTS).build();
+        Uri PLANT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH).build();
         if (mCursor != null) mCursor.close();
         mCursor = mContext.getContentResolver().query(
                 PLANT_URI,
                 null,
                 null,
                 null,
-                PlantContract.PlantEntry.COLUMN_CREATION_TIME
+                ChristmasTreeContract.TreeEntry.COLUMN_CREATED_AT
         );
     }
 
@@ -91,13 +91,11 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         if (mCursor == null || mCursor.getCount() == 0) return null;
         mCursor.moveToPosition(position);
-        int idIndex = mCursor.getColumnIndex(PlantContract.PlantEntry._ID);
-        int createTimeIndex = mCursor.getColumnIndex(PlantContract.PlantEntry.COLUMN_CREATION_TIME);
-        int waterTimeIndex = mCursor.getColumnIndex(PlantContract.PlantEntry.COLUMN_LAST_WATERED_TIME);
-        int plantTypeIndex = mCursor.getColumnIndex(PlantContract.PlantEntry.COLUMN_PLANT_TYPE);
+        int idIndex = mCursor.getColumnIndex(ChristmasTreeContract.TreeEntry._ID);
+        int createTimeIndex = mCursor.getColumnIndex(ChristmasTreeContract.TreeEntry.COLUMN_CREATED_AT);
+        int waterTimeIndex = mCursor.getColumnIndex(ChristmasTreeContract.TreeEntry.COLUMN_WATERED_AT);
 
         long plantId = mCursor.getLong(idIndex);
-        int plantType = mCursor.getInt(plantTypeIndex);
         long createdAt = mCursor.getLong(createTimeIndex);
         long wateredAt = mCursor.getLong(waterTimeIndex);
         long timeNow = System.currentTimeMillis();
@@ -105,14 +103,14 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.plant_widget);
 
         // Update the plant image
-        int imgRes = PlantUtils.getPlantImageRes(mContext, timeNow - createdAt, timeNow - wateredAt, plantType);
+        int imgRes = TreeUtils.getPlantImageRes(mContext, timeNow - createdAt, timeNow - wateredAt);
         views.setImageViewResource(R.id.widget_plant_image, imgRes);
         // Always hide the water drop in GridView mode
         views.setViewVisibility(R.id.widget_water_button, View.GONE);
 
         // Fill in the onClick PendingIntent Template using the specific plant Id for each item individually
         Bundle extras = new Bundle();
-        extras.putLong(PlantDetailActivity.EXTRA_PLANT_ID, plantId);
+        extras.putLong(ChristmasTreeActivity.EXTRA_PLANT_ID, plantId);
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);
         views.setOnClickFillInIntent(R.id.widget_plant_image, fillInIntent);
