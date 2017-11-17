@@ -32,16 +32,19 @@ public class TreeUtils {
     public static final long MIN_AGE_BETWEEN_WATER = HOUR_MILLISECONDS * 2; // can water every 2 hours
     static final long DANGER_AGE_WITHOUT_WATER = HOUR_MILLISECONDS * 6; // in danger after 6 hours
     public static final long MAX_AGE_WITHOUT_WATER = HOUR_MILLISECONDS * 12; // plants die after 12 hours
-    static final long TINY_AGE = DAY_MILLISECONDS * 0; // plants start tiny
-    static final long JUVENILE_AGE = DAY_MILLISECONDS * 1; // 1 day old
-    static final long FULLY_GROWN_AGE = DAY_MILLISECONDS * 2; // 2 days old
+    static final long TINY_AGE = HOUR_MILLISECONDS * 0; // plants start tiny
+    static final long SMALL_AGE = HOUR_MILLISECONDS * 2; // plants start tiny
+    static final long JUVENILE_AGE = HOUR_MILLISECONDS * 4; // 3 day old
+    static final long MIDDLE_AGE = HOUR_MILLISECONDS * 6; // 5 day old
+    static final long FULLY_GROWN_AGE = HOUR_MILLISECONDS * 8; // 7 days old
+    static final long CHRISTMAS_AGE = HOUR_MILLISECONDS * 10; //10 days old
 
 
     public enum PlantStatus {ALIVE, DYING, DEAD}
 
     ;
 
-    public enum PlantSize {TINY, JUVENILE, FULLY_GROWN}
+    public enum PlantSize {TINY, SMALL, JUVENILE, MIDDLE, FULLY_GROWN, CHRISTMAS}
 
     ;
 
@@ -60,11 +63,18 @@ public class TreeUtils {
         else if (waterAge > DANGER_AGE_WITHOUT_WATER) status = PlantStatus.DYING;
 
         //Update image if old enough
-        if (plantAge > FULLY_GROWN_AGE) {
-            return getPlantImgRes(context,status, PlantSize.FULLY_GROWN);
+        if (plantAge > CHRISTMAS_AGE) {
+            return getPlantImgRes(context, status, PlantSize.CHRISTMAS);
+
+        } else if (plantAge > FULLY_GROWN_AGE) {
+            return getPlantImgRes(context, status, PlantSize.FULLY_GROWN);
+        }else if (plantAge > MIDDLE_AGE) {
+            return getPlantImgRes(context, status, PlantSize.MIDDLE);
         } else if (plantAge > JUVENILE_AGE) {
-            return getPlantImgRes(context,  status, PlantSize.JUVENILE);
-        } else if (plantAge > TINY_AGE) {
+            return getPlantImgRes(context, status, PlantSize.JUVENILE);
+        } else if (plantAge > SMALL_AGE) {
+            return getPlantImgRes(context, status, PlantSize.SMALL);
+        }else if (plantAge > TINY_AGE) {
             return getPlantImgRes(context, status, PlantSize.TINY);
         } else {
             return R.drawable.empty_pot;
@@ -87,8 +97,11 @@ public class TreeUtils {
         if (status == PlantStatus.DYING) resName += "_danger";
         else if (status == PlantStatus.DEAD) resName += "_dead";
         if (size == PlantSize.TINY) resName += "_1";
-        else if (size == PlantSize.JUVENILE) resName += "_2";
-        else if (size == PlantSize.FULLY_GROWN) resName += "_3";
+        else if (size == PlantSize.SMALL) resName += "_2";
+        else if (size == PlantSize.JUVENILE) resName += "_3";
+        else if (size == PlantSize.MIDDLE) resName += "_4";
+        else if (size == PlantSize.FULLY_GROWN) resName += "_5";
+        else if (size == PlantSize.CHRISTMAS) resName += "_6";
         return context.getResources().getIdentifier(resName, "drawable", context.getPackageName());
     }
 

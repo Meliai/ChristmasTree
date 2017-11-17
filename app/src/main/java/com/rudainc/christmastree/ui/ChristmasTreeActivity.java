@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -14,10 +13,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.rudainc.christmastree.TreeWateringService;
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
 import com.rudainc.christmastree.R;
+import com.rudainc.christmastree.TreeWateringService;
 import com.rudainc.christmastree.provider.ChristmasTreeContract;
 import com.rudainc.christmastree.utils.TreeUtils;
+
+import io.fabric.sdk.android.Fabric;
 
 import static android.provider.BaseColumns._ID;
 import static com.rudainc.christmastree.provider.ChristmasTreeContract.BASE_CONTENT_URI;
@@ -35,11 +38,13 @@ public class ChristmasTreeActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics(), new Answers());
         setContentView(R.layout.activity_christmas_tree);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
     public void onWaterButtonClick(View view) {
+        Log.i("WATER", "plant " + id);
         TreeWateringService.startActionWaterPlant(this, id);
     }
 
@@ -111,9 +116,8 @@ public class ChristmasTreeActivity extends AppCompatActivity
 
         getContentResolver().notifyChange(ChristmasTreeContract.BASE_CONTENT_URI, null);
         long timeNow = System.currentTimeMillis();
-        // Insert the new plant into DB
-        ContentValues contentValues = new ContentValues();
 
+        ContentValues contentValues = new ContentValues();
         contentValues.put(TreeEntry.COLUMN_CREATED_AT, timeNow);
         contentValues.put(ChristmasTreeContract.TreeEntry.COLUMN_WATERED_AT, timeNow);
         getContentResolver().insert(ChristmasTreeContract.TreeEntry.CONTENT_URI, contentValues);

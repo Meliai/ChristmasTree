@@ -87,18 +87,12 @@ public class ChristmasTreeContentProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mChristmasTreeDbHelper.getWritableDatabase();
-        int match = sUriMatcher.match(uri);
+
         int deleted;
 
         String id = selectionArgs[0];
-        switch (match) {
-            case TREE:
-                deleted = db.delete(ChristmasTreeContract.TreeEntry.TABLE_NAME, "_id=?", new String[]{id});
-                break;
+        deleted = db.delete(ChristmasTreeContract.TreeEntry.TABLE_NAME, "_id=?", new String[]{id});
 
-            default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
-        }
         Log.i("DELETED", "id deleted " + deleted);
         if (deleted != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
@@ -111,17 +105,10 @@ public class ChristmasTreeContentProvider extends ContentProvider {
     public int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         final SQLiteDatabase db = mChristmasTreeDbHelper.getWritableDatabase();
-        int match = sUriMatcher.match(uri);
+
         int updated;
+        updated = db.update(TreeEntry.TABLE_NAME, values, selection, selectionArgs);
 
-        switch (match) {
-            case TREE:
-                updated = db.update(TreeEntry.TABLE_NAME, values, selection, selectionArgs);
-                break;
-
-            default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
-        }
         if (updated != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }

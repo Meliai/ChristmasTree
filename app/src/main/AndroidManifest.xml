@@ -32,6 +32,8 @@
 
         <activity
             android:name=".ui.ChristmasTreeActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
              >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +41,10 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7d7fd6c6db42ce4358379e29442057671756df92" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

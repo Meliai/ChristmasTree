@@ -38,7 +38,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        tools:src="@drawable/vine_3" />
+        tools:src="@drawable/tree_1" />
 
     <TextView
         android:id="@+id/plant_type_text"
