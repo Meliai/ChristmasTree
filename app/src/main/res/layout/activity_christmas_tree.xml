@@ -38,6 +38,7 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_since"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
@@ -45,7 +46,8 @@
         app:layout_constraintTop_toBottomOf="@id/plant_age"
         app:layout_constraintLeft_toLeftOf="@id/plant_age"
         app:layout_constraintRight_toRightOf="@id/plant_age"
-        android:text="@string/since_planted"/>
+        android:text="@string/since_planted"
+        android:textColor="@color/icons"/>
 
 
     <RelativeLayout
@@ -61,6 +63,7 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_water"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
@@ -68,7 +71,8 @@
         app:layout_constraintTop_toBottomOf="@id/water_meter"
         app:layout_constraintLeft_toLeftOf="@id/water_meter"
         app:layout_constraintRight_toRightOf="@id/water_meter"
-        android:text="@string/since_watered"/>
+        android:text="@string/since_watered"
+        android:textColor="@color/icons"/>
 
 
 
@@ -77,12 +81,28 @@
         android:id="@+id/ivTree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/water_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8"
-        tools:src="@drawable/tree_1" />
+        tools:src="@drawable/tree_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_margin="16dp"
+        android:id="@+id/tvPlant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/plant_tree"
+        app:layout_constraintBottom_toTopOf="@+id/water_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textStyle="bold"
+        android:textColor="@color/icons"
+        android:textSize="24sp"
+        />
 
 
     <android.support.design.widget.FloatingActionButton
@@ -94,7 +114,7 @@
         android:src="@drawable/add_white"
         app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:visibility="invisible"/>
 
     <android.support.design.widget.FloatingActionButton
@@ -106,8 +126,7 @@
         android:src="@drawable/water_drop_white"
         app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/plant_button"
-        app:layout_constraintRight_toLeftOf="@+id/reset_button"
+        app:layout_constraintLeft_toLeftOf="parent"
         android:visibility="invisible"/>
 
     <android.support.design.widget.FloatingActionButton

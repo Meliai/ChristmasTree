@@ -30,14 +30,14 @@ public class TreeUtils {
     private static final long DAY_MILLISECONDS = HOUR_MILLISECONDS * 24;
 
     public static final long MIN_AGE_BETWEEN_WATER = HOUR_MILLISECONDS * 2; // can water every 2 hours
-    static final long DANGER_AGE_WITHOUT_WATER = HOUR_MILLISECONDS * 2; // in danger after 6 hours
+    static final long DANGER_AGE_WITHOUT_WATER = HOUR_MILLISECONDS * 6; // in danger after 6 hours
     public static final long MAX_AGE_WITHOUT_WATER = HOUR_MILLISECONDS * 12; // plants die after 12 hours
-    static final long TINY_AGE = HOUR_MILLISECONDS * 0; // plants start tiny
-    static final long SMALL_AGE = HOUR_MILLISECONDS * 2; // plants start tiny
-    static final long JUVENILE_AGE = HOUR_MILLISECONDS * 4; // 3 day old
-    static final long MIDDLE_AGE = HOUR_MILLISECONDS * 6; // 5 day old
-    static final long FULLY_GROWN_AGE = HOUR_MILLISECONDS * 8; // 7 days old
-    static final long CHRISTMAS_AGE = HOUR_MILLISECONDS * 10; //10 days old
+    static final long TINY_AGE = DAY_MILLISECONDS * 0; // plants start tiny
+    static final long SMALL_AGE = DAY_MILLISECONDS * 2; // 2 day old
+    static final long JUVENILE_AGE = DAY_MILLISECONDS * 4; // 4 day old
+    static final long MIDDLE_AGE = DAY_MILLISECONDS * 6; // 6 day old
+    static final long FULLY_GROWN_AGE = DAY_MILLISECONDS * 8; // 8 days old
+    static final long CHRISTMAS_AGE = DAY_MILLISECONDS * 10; //10 days old
 
 
     public enum PlantStatus {ALIVE, DYING, DEAD}

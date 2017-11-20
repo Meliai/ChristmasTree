@@ -49,8 +49,8 @@ public class WaterLevelView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int colorPrimary = ContextCompat.getColor(mContext, R.color.dark_blue);
-        int colorPrimaryLight = ContextCompat.getColor(mContext, R.color.light_blue);
+        int colorPrimary = ContextCompat.getColor(mContext, R.color.dark_red);
+        int colorPrimaryLight = ContextCompat.getColor(mContext, R.color.light_red);
 
         mPaint.setColor(colorPrimaryLight);
         drawCircle(canvas, mPaint, 0, 360);
