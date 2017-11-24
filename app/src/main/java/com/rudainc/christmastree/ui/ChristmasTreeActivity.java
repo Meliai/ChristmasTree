@@ -9,7 +9,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -146,9 +145,9 @@ public class ChristmasTreeActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.share:
                 Answers.getInstance().logShare(new ShareEvent());
-                Intent intent = new Intent(Intent.ACTION_SEND);
+                Intent intent =  new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String app_link = "";
+                String app_link = "https://play.google.com/store/apps/details?id=com.rudainc.christmastree";
                 intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text) + app_link);
                 startActivity(Intent.createChooser(intent, "Share with"));
                 break;

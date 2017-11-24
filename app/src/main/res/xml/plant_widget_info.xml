@@ -20,7 +20,7 @@
     android:initialLayout="@layout/plant_widget"
     android:minHeight="150dp"
     android:minWidth="100dp"
-    android:previewImage="@drawable/launcher_icon"
+    android:previewImage="@drawable/tree_1"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen" />
