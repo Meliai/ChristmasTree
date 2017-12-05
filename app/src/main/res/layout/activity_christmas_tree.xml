@@ -16,15 +16,20 @@
     limitations under the License.
 -->
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_dark"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.ChristmasTreeActivity">
-
+    tools:context=".ui.ChristmasTreeActivity"
+    android:orientation="vertical"
+   >
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:background="@drawable/bg_dark">
     <RelativeLayout
         android:id="@+id/plant_age"
         android:layout_width="wrap_content"
@@ -141,5 +146,15 @@
         app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
-
 </android.support.constraint.ConstraintLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/my_ads_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        ads:adSize="BANNER"
+        android:background="@color/primary"
+        ads:adUnitId="@string/banner_ad_unit_id" />
+
+</LinearLayout>

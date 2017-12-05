@@ -8,4 +8,11 @@
     app:showAsAction="always"
     />
 
+    <item
+        android:id="@+id/ads"
+        android:title="@string/ads"
+        android:icon="@drawable/ic_spa_white_24dp"
+        app:showAsAction="always"
+        />
+
 </menu>

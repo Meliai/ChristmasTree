@@ -30,7 +30,7 @@ public class TreeUtils {
     private static final long DAY_MILLISECONDS = HOUR_MILLISECONDS * 24;
 
     public static final long MIN_AGE_BETWEEN_WATER = HOUR_MILLISECONDS * 2; // can water every 2 hours
-    static final long DANGER_AGE_WITHOUT_WATER = HOUR_MILLISECONDS * 6; // in danger after 6 hours
+    public static final long DANGER_AGE_WITHOUT_WATER = HOUR_MILLISECONDS * 6; // in danger after 6 hours
     public static final long MAX_AGE_WITHOUT_WATER = HOUR_MILLISECONDS * 12; // plants die after 12 hours
     static final long TINY_AGE = DAY_MILLISECONDS * 0; // plants start tiny
     static final long SMALL_AGE = DAY_MILLISECONDS * 2; // 2 day old
@@ -38,6 +38,7 @@ public class TreeUtils {
     static final long MIDDLE_AGE = DAY_MILLISECONDS * 6; // 6 day old
     static final long FULLY_GROWN_AGE = DAY_MILLISECONDS * 8; // 8 days old
     static final long CHRISTMAS_AGE = DAY_MILLISECONDS * 10; //10 days old
+    private static PlantStatus status;
 
 
     public enum PlantStatus {ALIVE, DYING, DEAD}
@@ -58,7 +59,7 @@ public class TreeUtils {
      */
     public static int getPlantImageRes(Context context, long plantAge, long waterAge) {
         //check if plant is dead first
-        PlantStatus status = PlantStatus.ALIVE;
+        status = PlantStatus.ALIVE;
         if (waterAge > MAX_AGE_WITHOUT_WATER) status = PlantStatus.DEAD;
         else if (waterAge > DANGER_AGE_WITHOUT_WATER) status = PlantStatus.DYING;
 
@@ -79,6 +80,10 @@ public class TreeUtils {
         } else {
             return R.drawable.empty_pot;
         }
+    }
+
+    public static PlantStatus getStatus(){
+        return status;
     }
 
     /**

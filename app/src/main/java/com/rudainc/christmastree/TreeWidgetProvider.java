@@ -104,7 +104,7 @@ public class TreeWidgetProvider extends AppWidgetProvider {
         // Add the plant ID as extra to water only that plant when clicked
         wateringIntent.putExtra(TreeWateringService.EXTRA_PLANT_ID, plantId);
         PendingIntent wateringPendingIntent = PendingIntent.getService(context, 0, wateringIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.widget_water_button, wateringPendingIntent);
+//        views.setOnClickPendingIntent(R.id.widget_water_button, wateringPendingIntent);
         return views;
     }
 

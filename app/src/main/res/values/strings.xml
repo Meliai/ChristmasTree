@@ -11,4 +11,28 @@
     <string name="share">Share</string>
     <string name="share_text">Grow the Christmas Tree and decorate your mobile screen with widget via app\n</string>
     <string name="plant_tree">Plant your Christmas Tree! =)</string>
+
+    <string name="dialog_title">Want to recover your Tree?</string>
+    <string name="dialog_message">You should watch an advertising for that.</string>
+    <string name="btn_positive">Recover Tree</string>
+    <string name="btn_negative">Cut it</string>
+
+    <string name="internet">Please check your internet connection</string>
+
+    <string name="ce_open_ads">Open Ads</string>
+    <string name="ce_recover_tree">Recover Tree</string>
+
+    <!--test ads-->
+    <!--<string name="app_id_ads">ca-app-pub-1227764705187744~8481959673</string>-->
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <!--<string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>-->
+
+    <!--Real ads-->
+    <string name="app_id_ads">ca-app-pub-1227764705187744~8481959673</string>
+    <string name="banner_ad_unit_id"> ca-app-pub-1227764705187744/9712061118</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-1227764705187744/9926903285</string>
+    <string name="interstitial_ad_unit_id_recover">ca-app-pub-1227764705187744/5502187514</string>
+    <string name="ads">Ads</string>
+
+
 </resources>
