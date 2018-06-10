@@ -55,6 +55,7 @@ public class ChristmasTreeActivity extends AppCompatActivity
     private AdView mAdView;
     private InterstitialAd mInterstitialAdRecover;
     private InterstitialAd mInterstitialAd;
+    private boolean isAdsLoaded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,14 @@ public class ChristmasTreeActivity extends AppCompatActivity
         mAdView = findViewById(R.id.my_ads_banner);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                isAdsLoaded = true;
+            }
+
+        });
     }
 
     private void loadInAdsRecover() {
@@ -179,8 +188,8 @@ public class ChristmasTreeActivity extends AppCompatActivity
         (findViewById(R.id.tv_since)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
         (findViewById(R.id.tv_water)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
         (findViewById(R.id.ivTree)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
-        (findViewById(R.id.reset_button)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
-        (findViewById(R.id.water_button)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+        (findViewById(R.id.reset_button)).setVisibility(isPlanted && isAdsLoaded ? View.VISIBLE : View.INVISIBLE);
+        (findViewById(R.id.water_button)).setVisibility(isPlanted && isAdsLoaded ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
