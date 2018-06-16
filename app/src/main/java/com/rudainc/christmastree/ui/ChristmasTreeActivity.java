@@ -103,7 +103,6 @@ public class ChristmasTreeActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         prepareViews(this);
-
     }
 
     private void prepareViews(LoaderManager.LoaderCallbacks callback) {
@@ -112,8 +111,6 @@ public class ChristmasTreeActivity extends AppCompatActivity
             loadInAds();
             loadInAdsRecover();
         } else {
-            tvNoPlant.setVisibility(View.GONE);
-            
             Toast.makeText(getApplicationContext(), getString(R.string.internet), Toast.LENGTH_LONG).show();
         }
     }
