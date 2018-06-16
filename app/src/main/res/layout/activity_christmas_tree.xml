@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (C) 2017 The Android Open Source Project
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,8 +20,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".ui.ChristmasTreeActivity">
+    tools:context=".ui.ChristmasTreeActivity"
+    tools:ignore="ContentDescription"
+    android:paddingTop="?actionBarSize">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -50,8 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:text="@string/since_planted"
-            android:textColor="@color/icons"
-            android:textSize="12sp"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/text_size_12sp"
             app:layout_constraintLeft_toLeftOf="@id/plant_age"
             app:layout_constraintRight_toRightOf="@id/plant_age"
             app:layout_constraintTop_toBottomOf="@id/plant_age" />
@@ -76,8 +77,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:text="@string/since_watered"
-            android:textColor="@color/icons"
-            android:textSize="12sp"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/text_size_12sp"
             app:layout_constraintLeft_toLeftOf="@id/water_meter"
             app:layout_constraintRight_toRightOf="@id/water_meter"
             app:layout_constraintTop_toBottomOf="@id/water_meter" />
@@ -89,12 +90,22 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="16dp"
+            android:src="@drawable/tree_1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8"
-            tools:src="@drawable/tree_1" />
+            app:layout_constraintVertical_bias="0.8" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvPlant"
@@ -103,8 +114,8 @@
             android:layout_margin="16dp"
             android:layout_marginBottom="8dp"
             android:text="@string/plant_tree"
-            android:textColor="@color/icons"
-            android:textSize="24sp"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/text_size_24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/ivTree"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -137,7 +148,7 @@
             app:layout_constraintRight_toRightOf="parent" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/reset_button"
+            android:id="@+id/cut_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"

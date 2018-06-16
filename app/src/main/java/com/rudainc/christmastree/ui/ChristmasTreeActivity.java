@@ -11,16 +11,18 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,8 @@ import com.rudainc.christmastree.TreeWateringService;
 import com.rudainc.christmastree.provider.ChristmasTreeContract;
 import com.rudainc.christmastree.utils.TreeUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 
 import static android.provider.BaseColumns._ID;
@@ -49,106 +53,73 @@ import static com.rudainc.christmastree.provider.ChristmasTreeContract.TreeEntry
 public class ChristmasTreeActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_ID = 1111;
+    private static final int LOADER_ID = 9263;
     public static final String EXTRA_PLANT_ID = "com.rudainc.christmastree.extra.PLANT_ID";
+    private static final String TEXT_TYPE = "text/plain";
+    private static final String APP_LINK = "https://play.google.com/store/apps/details?id=com.rudainc.christmastree";
     long id;
-    private AdView mAdView;
+    @BindView(R.id.my_ads_banner)
+    AdView mAdView;
+    @BindView(R.id.ivTree)
+    ImageView mImageTree;
+    @BindView(R.id.cut_button)
+    FloatingActionButton btnCut;
+    @BindView(R.id.water_button)
+    FloatingActionButton btnWater;
+    @BindView(R.id.plant_button)
+    FloatingActionButton btnPlant;
+    @BindView(R.id.water_level)
+    WaterLevelView waterLVL;
+    @BindView(R.id.tvAge)
+    TextView tvPlantAge;
+    @BindView(R.id.wateredAtUnit)
+    TextView wateredAtUnit;
+    @BindView(R.id.tvAgeUnit)
+    TextView tvAgeUnit;
+    @BindView(R.id.wateredAt)
+    TextView tvWateredAt;
+    @BindView(R.id.tvPlant)
+    TextView tvNoPlant;
+    @BindView(R.id.plant_age)
+    RelativeLayout rlPlantAge;
+    @BindView(R.id.water_meter)
+    RelativeLayout rlWaterMeter;
+    @BindView(R.id.tv_since)
+    TextView tvSince;
+    @BindView(R.id.tv_water)
+    TextView tvWater;
+    @BindView(R.id.progress)
+    ProgressBar progressBar;
+
     private InterstitialAd mInterstitialAdRecover;
     private InterstitialAd mInterstitialAd;
-    private boolean isPlanted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_christmas_tree);
         Fabric.with(this, new Crashlytics(), new Answers());
         MobileAds.initialize(this, getString(R.string.app_id_ads));
+        ButterKnife.bind(this);
 
-        setContentView(R.layout.activity_christmas_tree);
-        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        prepareViews(this);
 
-        prepareViews();
     }
 
-    private void prepareViews() {
+    private void prepareViews(LoaderManager.LoaderCallbacks callback) {
         if (isOnline(getApplicationContext())) {
-            loadAds();
+            loadAds(callback);
             loadInAds();
             loadInAdsRecover();
         } else {
-            Toast.makeText(getApplicationContext(), "Check internet connection", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.internet), Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        prepareViews();
-    }
-
-    public void onWaterButtonClick(View view) {
-        TreeWateringService.startActionWaterPlant(this, id);
-    }
-
-    private void loadAds() {
-        mAdView = findViewById(R.id.my_ads_banner);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                (findViewById(R.id.reset_button)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
-                (findViewById(R.id.water_button)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
-                (findViewById(R.id.plant_button)).setVisibility(isPlanted ? View.INVISIBLE : View.VISIBLE);
-            }
-        });
-    }
-
-    private void loadInAdsRecover() {
-        mInterstitialAdRecover = new InterstitialAd(this);
-        mInterstitialAdRecover.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
-        mInterstitialAdRecover.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-
-            }
-
-        });
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mInterstitialAdRecover.loadAd(adRequest);
-        mInterstitialAdRecover.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                Uri SINGLE_PLANT_URI = ContentUris.withAppendedId(
-                        BASE_CONTENT_URI.buildUpon().appendPath(PATH).build(), id);
-                long timeNow = System.currentTimeMillis();
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(ChristmasTreeContract.TreeEntry.COLUMN_WATERED_AT, timeNow - TreeUtils.DANGER_AGE_WITHOUT_WATER);
-                // Update only if that plant is still alive
-                getContentResolver().update(
-                        SINGLE_PLANT_URI,
-                        contentValues,
-                        null,
-                        null);
-                Answers.getInstance().logCustom(new CustomEvent(getString(R.string.ce_recover_tree)));
-            }
-        });
-    }
-
-    private void loadInAds() {
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-
-            }
-
-        });
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mInterstitialAd.loadAd(adRequest);
+        prepareViews(this);
     }
 
     @Override
@@ -177,38 +148,43 @@ public class ChristmasTreeActivity extends AppCompatActivity
 
         int plantImgRes = TreeUtils.getPlantImageRes(this, timeNow - createdAt, timeNow - wateredAt);
 
-        ((ImageView) findViewById(R.id.ivTree)).setImageResource(plantImgRes);
+        mImageTree.setImageResource(plantImgRes);
 
-        ((TextView) findViewById(R.id.tvAge)).setText(
+        tvPlantAge.setText(
                 String.valueOf(TreeUtils.getDisplayAgeInt(timeNow - createdAt))
         );
-        ((TextView) findViewById(R.id.tvAgeUnit)).setText(
+        tvAgeUnit.setText(
                 TreeUtils.getDisplayAgeUnit(this, timeNow - createdAt)
         );
-        ((TextView) findViewById(R.id.wateredAt)).setText(
+        tvWateredAt.setText(
                 String.valueOf(TreeUtils.getDisplayAgeInt(timeNow - wateredAt))
         );
-        ((TextView) findViewById(R.id.wateredAtUnit)).setText(
+        wateredAtUnit.setText(
                 TreeUtils.getDisplayAgeUnit(this, timeNow - wateredAt)
         );
         int waterPercent = 100 - ((int) (100 * (timeNow - wateredAt) / TreeUtils.MAX_AGE_WITHOUT_WATER));
-        ((WaterLevelView) findViewById(R.id.water_level)).setValue(waterPercent);
+        waterLVL.setValue(waterPercent);
     }
 
     private void plantUI(boolean isPlanted) {
-        this.isPlanted = isPlanted;
-        (findViewById(R.id.tvPlant)).setVisibility(isPlanted ? View.GONE : View.VISIBLE);
-        (findViewById(R.id.plant_button)).setVisibility(isPlanted ? View.INVISIBLE : View.VISIBLE);
-        (findViewById(R.id.plant_age)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
-        (findViewById(R.id.water_meter)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
-        (findViewById(R.id.tv_since)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
-        (findViewById(R.id.tv_water)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
-        (findViewById(R.id.ivTree)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+        tvNoPlant.setVisibility(isPlanted ? View.GONE : View.VISIBLE);
+        rlPlantAge.setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+        rlWaterMeter.setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+        tvSince.setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+        tvWater.setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+        mImageTree.setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+        btnCut.setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+        btnWater.setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+        btnPlant.setVisibility(isPlanted ? View.INVISIBLE : View.VISIBLE);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    public void onWaterButtonClick(View view) {
+        TreeWateringService.startActionWaterPlant(this, id);
     }
 
     public void onCutButtonClick(View view) {
@@ -274,10 +250,9 @@ public class ChristmasTreeActivity extends AppCompatActivity
             case R.id.share:
                 Answers.getInstance().logShare(new ShareEvent());
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                String app_link = "https://play.google.com/store/apps/details?id=com.rudainc.christmastree";
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text) + app_link);
-                startActivity(Intent.createChooser(intent, "Share with"));
+                intent.setType(TEXT_TYPE);
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text) + APP_LINK);
+                startActivity(Intent.createChooser(intent, getString(R.string.share_with)));
                 break;
             case R.id.ads:
                 Answers.getInstance().logCustom(new CustomEvent(getString(R.string.ce_open_ads)));
@@ -287,9 +262,73 @@ public class ChristmasTreeActivity extends AppCompatActivity
         return true;
     }
 
+    private void loadAds(final LoaderManager.LoaderCallbacks callback) {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                progressBar.setVisibility(View.GONE);
+                getSupportLoaderManager().initLoader(LOADER_ID, null, callback);
+            }
+        });
+    }
+
+    private void loadInAdsRecover() {
+        mInterstitialAdRecover = new InterstitialAd(this);
+        mInterstitialAdRecover.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
+        mInterstitialAdRecover.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+
+            }
+
+        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAdRecover.loadAd(adRequest);
+        mInterstitialAdRecover.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                Uri SINGLE_PLANT_URI = ContentUris.withAppendedId(
+                        BASE_CONTENT_URI.buildUpon().appendPath(PATH).build(), id);
+                long timeNow = System.currentTimeMillis();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(ChristmasTreeContract.TreeEntry.COLUMN_WATERED_AT, timeNow - TreeUtils.DANGER_AGE_WITHOUT_WATER);
+                // Update only if that plant is still alive
+                getContentResolver().update(
+                        SINGLE_PLANT_URI,
+                        contentValues,
+                        null,
+                        null);
+                Answers.getInstance().logCustom(new CustomEvent(getString(R.string.ce_recover_tree)));
+            }
+        });
+    }
+
+    private void loadInAds() {
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+
+            }
+
+        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequest);
+    }
+
+
     public boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        NetworkInfo netInfo = null;
+        if (cm != null) {
+            netInfo = cm.getActiveNetworkInfo();
+        }
         //should check null because in airplane mode it will be null
         return (netInfo != null && netInfo.isConnected());
     }

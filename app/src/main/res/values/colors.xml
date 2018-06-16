@@ -7,11 +7,6 @@
         <color name="primary_mid_200">#a5b4e1</color>
         <color name="accent">#D30A0B</color>
         <color name="primary_text">#212121</color>
-        <color name="secondary_text">#757575</color>
-        <color name="icons">#212121</color>
-        <color name="divider">#BDBDBD</color>
-
-
         <color name="dark_red">#ba090a</color>
         <color name="light_red">#c45152</color>
 </resources>

@@ -33,6 +33,7 @@
         android:id="@+id/wateredAt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/water_level"
@@ -40,18 +41,17 @@
         app:layout_constraintRight_toRightOf="@+id/water_level"
         app:layout_constraintTop_toTopOf="@+id/water_level"
         app:layout_constraintVertical_bias="0.3"
-        tools:text="17"
-        android:textColor="@color/icons"/>
+        tools:text="0" />
 
     <TextView
         android:id="@+id/wateredAtUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
+        android:textColor="@color/primary_text"
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="@+id/water_level"
         app:layout_constraintRight_toRightOf="@+id/water_level"
         app:layout_constraintTop_toTopOf="@+id/wateredAt"
-        tools:text="@string/minutes"
-        android:textColor="@color/icons"/>
+        tools:text="@string/minutes" />
 </android.support.constraint.ConstraintLayout>

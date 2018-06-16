@@ -17,11 +17,8 @@ package com.rudainc.christmastree.utils;
 */
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 
 import com.rudainc.christmastree.R;
-
 
 public class TreeUtils {
 
@@ -32,22 +29,20 @@ public class TreeUtils {
     public static final long MIN_AGE_BETWEEN_WATER = HOUR_MILLISECONDS * 2; // can water every 2 hours
     public static final long DANGER_AGE_WITHOUT_WATER = HOUR_MILLISECONDS * 6; // in danger after 6 hours
     public static final long MAX_AGE_WITHOUT_WATER = HOUR_MILLISECONDS * 12; // plants die after 12 hours
-    static final long TINY_AGE = DAY_MILLISECONDS * 0; // plants start tiny
-    static final long SMALL_AGE = DAY_MILLISECONDS * 2; // 2 day old
-    static final long JUVENILE_AGE = DAY_MILLISECONDS * 4; // 4 day old
-    static final long MIDDLE_AGE = DAY_MILLISECONDS * 6; // 6 day old
-    static final long FULLY_GROWN_AGE = DAY_MILLISECONDS * 8; // 8 days old
-    static final long CHRISTMAS_AGE = DAY_MILLISECONDS * 10; //10 days old
-    private static PlantStatus status;
+    private static final long TINY_AGE = 0L; // plants start tiny
+    private static final long SMALL_AGE = DAY_MILLISECONDS * 2; // 2 day old
+    private static final long JUVENILE_AGE = DAY_MILLISECONDS * 4; // 4 day old
+    private static final long MIDDLE_AGE = DAY_MILLISECONDS * 6; // 6 day old
+    private static final long FULLY_GROWN_AGE = DAY_MILLISECONDS * 8; // 8 days old
+    private static final long CHRISTMAS_AGE = DAY_MILLISECONDS * 10; //10 days old
 
+    private static final String KEY_DEF_TYPE = "drawable";
+
+    private static PlantStatus status;
 
     public enum PlantStatus {ALIVE, DYING, DEAD}
 
-    ;
-
     public enum PlantSize {TINY, SMALL, JUVENILE, MIDDLE, FULLY_GROWN, CHRISTMAS}
-
-    ;
 
     /**
      * Returns the corresponding image resource of the plant given the plant's age and
@@ -69,20 +64,20 @@ public class TreeUtils {
 
         } else if (plantAge > FULLY_GROWN_AGE) {
             return getPlantImgRes(context, status, PlantSize.FULLY_GROWN);
-        }else if (plantAge > MIDDLE_AGE) {
+        } else if (plantAge > MIDDLE_AGE) {
             return getPlantImgRes(context, status, PlantSize.MIDDLE);
         } else if (plantAge > JUVENILE_AGE) {
             return getPlantImgRes(context, status, PlantSize.JUVENILE);
         } else if (plantAge > SMALL_AGE) {
             return getPlantImgRes(context, status, PlantSize.SMALL);
-        }else if (plantAge > TINY_AGE) {
+        } else if (plantAge > TINY_AGE) {
             return getPlantImgRes(context, status, PlantSize.TINY);
         } else {
             return R.drawable.empty_pot;
         }
     }
 
-    public static PlantStatus getStatus(){
+    public static PlantStatus getStatus() {
         return status;
     }
 
@@ -95,19 +90,40 @@ public class TreeUtils {
      * @param size    The PlantSize
      * @return Image Resource to the correct plant image
      */
-    public static int getPlantImgRes(Context context, PlantStatus status, PlantSize size) {
-        Resources res = context.getResources();
-        TypedArray plantTypes = res.obtainTypedArray(R.array.plant_types);
-        String resName = plantTypes.getString(0);
-        if (status == PlantStatus.DYING) resName += "_danger";
-        else if (status == PlantStatus.DEAD) resName += "_dead";
-        if (size == PlantSize.TINY) resName += "_1";
-        else if (size == PlantSize.SMALL) resName += "_2";
-        else if (size == PlantSize.JUVENILE) resName += "_3";
-        else if (size == PlantSize.MIDDLE) resName += "_4";
-        else if (size == PlantSize.FULLY_GROWN) resName += "_5";
-        else if (size == PlantSize.CHRISTMAS) resName += "_6";
-        return context.getResources().getIdentifier(resName, "drawable", context.getPackageName());
+    private static int getPlantImgRes(Context context, PlantStatus status, PlantSize size) {
+        String resName = "tree";
+        switch (status) {
+            case DYING:
+                resName += "_danger";
+                break;
+            case DEAD:
+                resName += "_dead";
+                break;
+        }
+
+        switch (size) {
+            case TINY:
+                resName += "_1";
+                break;
+            case SMALL:
+                resName += "_2";
+                break;
+            case JUVENILE:
+                resName += "_3";
+                break;
+            case MIDDLE:
+                resName += "_4";
+                break;
+            case FULLY_GROWN:
+                resName += "_5";
+                break;
+            case CHRISTMAS:
+                resName += "_6";
+                break;
+        }
+
+        return context.getResources().
+                getIdentifier(resName, KEY_DEF_TYPE, context.getPackageName());
     }
 
 
