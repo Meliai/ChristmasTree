@@ -55,7 +55,7 @@ public class ChristmasTreeActivity extends AppCompatActivity
     private AdView mAdView;
     private InterstitialAd mInterstitialAdRecover;
     private InterstitialAd mInterstitialAd;
-    private boolean isAdsLoaded;
+    private boolean isPlanted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +66,23 @@ public class ChristmasTreeActivity extends AppCompatActivity
         setContentView(R.layout.activity_christmas_tree);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
-        loadAds();
-        loadInAds();
-        loadInAdsRecover();
+        prepareViews();
+    }
+
+    private void prepareViews() {
+        if (isOnline(getApplicationContext())) {
+            loadAds();
+            loadInAds();
+            loadInAdsRecover();
+        } else {
+            Toast.makeText(getApplicationContext(), "Check internet connection", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        prepareViews();
     }
 
     public void onWaterButtonClick(View view) {
@@ -83,9 +97,10 @@ public class ChristmasTreeActivity extends AppCompatActivity
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
-                isAdsLoaded = true;
+                (findViewById(R.id.reset_button)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+                (findViewById(R.id.water_button)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
+                (findViewById(R.id.plant_button)).setVisibility(isPlanted ? View.INVISIBLE : View.VISIBLE);
             }
-
         });
     }
 
@@ -181,6 +196,7 @@ public class ChristmasTreeActivity extends AppCompatActivity
     }
 
     private void plantUI(boolean isPlanted) {
+        this.isPlanted = isPlanted;
         (findViewById(R.id.tvPlant)).setVisibility(isPlanted ? View.GONE : View.VISIBLE);
         (findViewById(R.id.plant_button)).setVisibility(isPlanted ? View.INVISIBLE : View.VISIBLE);
         (findViewById(R.id.plant_age)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
@@ -188,8 +204,6 @@ public class ChristmasTreeActivity extends AppCompatActivity
         (findViewById(R.id.tv_since)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
         (findViewById(R.id.tv_water)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
         (findViewById(R.id.ivTree)).setVisibility(isPlanted ? View.VISIBLE : View.INVISIBLE);
-        (findViewById(R.id.reset_button)).setVisibility(isPlanted && isAdsLoaded ? View.VISIBLE : View.INVISIBLE);
-        (findViewById(R.id.water_button)).setVisibility(isPlanted && isAdsLoaded ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
