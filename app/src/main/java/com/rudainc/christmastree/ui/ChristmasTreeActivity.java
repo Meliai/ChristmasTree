@@ -112,6 +112,8 @@ public class ChristmasTreeActivity extends AppCompatActivity
             loadInAds();
             loadInAdsRecover();
         } else {
+            tvNoPlant.setVisibility(View.GONE);
+            
             Toast.makeText(getApplicationContext(), getString(R.string.internet), Toast.LENGTH_LONG).show();
         }
     }
